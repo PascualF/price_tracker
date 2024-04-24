@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import smtplib
+import time
 
 base_url = 'https://www.olx.pt/'
 url = 'https://www.olx.pt/lazer/bilhetes-espectaculos/q-olivia-rodrigo/?search%5Border%5D=created_at:desc'
@@ -24,7 +25,7 @@ def check_price():
         price = int(price[:4])
         price = int(price / 2)
 
-    if price > 60:
+    if price < 60:
         send_mail()
 
     #price_all = soup.find_all(class_='css-tyui9s er34gjf0')
@@ -45,18 +46,20 @@ def send_mail():
 
     server.login('pascualfelicio@gmail.com', 'oezr amuo wkno auzn')    
 
-    subject = 'Checka o Preço!!!'
+    subject = 'Checka o Price!!!'
     body = 'Vai comprar o bilhete agora!!'
 
-    msg = f"Subject: {subject}\n\n{body}"
+    msg = f"Subject: {subject}\n\n{body}\n{url}"
+    
 
     server.sendmail(
         'pascualfelicio@gmail.com',
-        'pasc_cardistry@gmail.com',
-        msg
+        'micael.13931512@gmail.com',
+        msg.encode("ascii", errors="ignore")
     )
 
     server.quit()
 
-
-check_price()
+while(True):
+    check_price()
+    time.sleep(60*60)
